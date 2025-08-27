@@ -74,6 +74,7 @@ ul li:hover{
 
 ul li span {
     flex-grow: 1; /* Ocupa todo o espaço restante */
+    min-width: 0;
 }
 
 ul li i {
