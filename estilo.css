@@ -1,20 +1,30 @@
+:root {
+    --cor-primaria: #a35858;
+    --cor-secundaria: #349223;
+    --cor-excluir: #f0333f;
+    --cor-fundo-li-par: beige;
+    --cor-texto-concluido: #888;
+}
+
 body {
     margin: 0;
-
+    font-family: sans-serif; /* Adicione uma fonte para melhor legibilidade */
 }
 
 header{
-    background-color: #a35858;
+    background-color: var(--cor-primaria);
     color: #fff;
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
+    align-items: center; /* Alinha verticalmente os itens */
     padding: 20px;
 }
 
 header h1 {
     width: 100%;
     text-align: center;
+    margin-bottom: 15px; /* Adiciona um espaço abaixo do título */
 }
 
 header input{
@@ -23,13 +33,18 @@ header input{
     padding: 10px;
     width: 60%;
     font-size: 18px;
-
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Sutil sombra para destacar */
 }
 
 header span {
     padding-left: 10px;
     font-size: 35px;
     cursor: pointer;
+    transition: transform 0.2s ease-in-out; /* Adiciona uma transição suave */
+}
+
+header span:hover {
+    transform: scale(1.1); /* Efeito de zoom ao passar o mouse */
 }
 
 ul{
@@ -43,13 +58,44 @@ ul li {
     list-style-type: none;
     font-size: 20px;
     display: flex;
-    transition: 0.3s;
     align-items: center;
+    gap: 10px; /* Adiciona um espaço entre os elementos */
+    transition: 0.3s;
 }
 
-ul li:nth-child(odd) {background-color: beige;}
-ul li:hover{background-color: #a35858
-;}
-ul li span {width: 80%;}
-ul li i {width: 10%;text-align: center;}
-.close{color: #f0333f;}
+ul li:nth-child(even) {
+    background-color: var(--cor-fundo-li-par);
+}
+
+ul li:hover{
+    background-color: var(--cor-primaria);
+    color: #fff; /* Muda a cor do texto no hover */
+}
+
+ul li span {
+    flex-grow: 1; /* Ocupa todo o espaço restante */
+}
+
+ul li i {
+    width: 10%;
+    text-align: center;
+}
+
+/* Estilos específicos para os ícones */
+.check {
+    color: #333; /* Cor padrão */
+}
+
+.close{
+    color: var(--cor-excluir);
+}
+
+/* --- Classe para tarefas concluídas --- */
+.concluida span {
+    text-decoration: line-through;
+    color: var(--cor-texto-concluido);
+}
+
+.concluida .check {
+    color: var(--cor-secundaria); /* Usa a cor verde para o ícone de concluído */
+}
