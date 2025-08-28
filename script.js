@@ -1,20 +1,13 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // Declaração de variáveis. Verifique se os IDs no HTML são os mesmos.
     const tarefaInput = document.querySelector("#tarefa");
+    const dataInput = document.querySelector("#data-input");
+    const horarioInput = document.querySelector("#horario-input");
     const btn = document.querySelector("#btn");
     const lista = document.querySelector("#lista");
-    
-    const editModal = document.querySelector("#edit-modal");
-    const editForm = document.querySelector("#edit-form");
-    const editTarefaInput = document.querySelector("#edit-tarefa");
-    const editDataInput = document.querySelector("#edit-data");
-    const editHorarioInput = document.querySelector("#edit-horario");
-    const cancelEditBtn = document.querySelector("#cancel-edit-btn");
 
     let tarefas = [];
     let tarefaSendoEditadaIndex = null;
 
-    // Função para renderizar as tarefas na tela a partir do array 'tarefas'.
     function renderizarTarefas() {
         lista.innerHTML = '';
         
@@ -48,7 +41,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Função para carregar as tarefas do LocalStorage
     function carregarTarefas() {
         const tarefasSalvas = localStorage.getItem('minhasTarefas');
         if (tarefasSalvas) {
@@ -57,28 +49,42 @@ document.addEventListener('DOMContentLoaded', () => {
         renderizarTarefas();
     }
 
-    // Função para salvar as tarefas no LocalStorage
     function salvarTarefas() {
         localStorage.setItem('minhasTarefas', JSON.stringify(tarefas));
     }
 
-    // Adiciona nova tarefa
+    // Adiciona ou edita uma tarefa
     btn.addEventListener("click", function() {
         const textoTarefa = tarefaInput.value.trim();
+        const dataTarefa = dataInput.value;
+        const horarioTarefa = horarioInput.value;
+
         if (textoTarefa === "") {
             alert("Digite uma tarefa válida!");
+            return;
+        }
+
+        if (tarefaSendoEditadaIndex !== null) {
+            // Se estiver editando, atualiza a tarefa existente
+            tarefas[tarefaSendoEditadaIndex].texto = textoTarefa;
+            tarefas[tarefaSendoEditadaIndex].data = dataTarefa;
+            tarefas[tarefaSendoEditadaIndex].horario = horarioTarefa;
+            tarefaSendoEditadaIndex = null; // Reseta o índice de edição
         } else {
+            // Se não estiver editando, adiciona uma nova tarefa
             tarefas.push({
                 texto: textoTarefa,
                 concluida: false,
-                data: "",
-                horario: ""
+                data: dataTarefa,
+                horario: horarioTarefa
             });
-            
-            salvarTarefas();
-            renderizarTarefas();
-            tarefaInput.value = "";
         }
+        
+        salvarTarefas();
+        renderizarTarefas();
+        tarefaInput.value = "";
+        dataInput.value = "";
+        horarioInput.value = "";
     });
 
     // Lógica para clique na lista (marcar/remover/editar)
@@ -105,39 +111,11 @@ document.addEventListener('DOMContentLoaded', () => {
             const index = parseInt(e.target.dataset.index);
             tarefaSendoEditadaIndex = index;
             
-            editTarefaInput.value = tarefas[index].texto;
-            editDataInput.value = tarefas[index].data;
-            editHorarioInput.value = tarefas[index].horario;
-
-            editModal.classList.remove('hidden');
+            // Preenche os campos de entrada com os dados da tarefa
+            tarefaInput.value = tarefas[index].texto;
+            dataInput.value = tarefas[index].data;
+            horarioInput.value = tarefas[index].horario;
         }
-    });
-
-    // Lógica do modal de edição
-    editForm.addEventListener('submit', (e) => {
-        e.preventDefault();
-
-        const novoTexto = editTarefaInput.value.trim();
-        const novaData = editDataInput.value;
-        const novoHorario = editHorarioInput.value;
-
-        if (novoTexto === "") {
-            alert("A tarefa não pode ficar vazia!");
-            return;
-        }
-
-        tarefas[tarefaSendoEditadaIndex].texto = novoTexto;
-        tarefas[tarefaSendoEditadaIndex].data = novaData;
-        tarefas[tarefaSendoEditadaIndex].horario = novoHorario;
-
-        salvarTarefas();
-        renderizarTarefas();
-
-        editModal.classList.add('hidden');
-    });
-
-    cancelEditBtn.addEventListener('click', () => {
-        editModal.classList.add('hidden');
     });
 
     carregarTarefas();
