@@ -1,21 +1,3 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lista de Tarefas</title>
-    <link rel="stylesheet" href="estilo.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-</head>
-<body>
-<header>
-    <h1> Lista de Tarefas </h1>
-    <input type="text" id="tarefa" placeholder="Digite sua Tarefa">
-    <button id="btn"><i class="fas fa-plus-circle"></i></button>
-</header> 
-
-<ul id="lista"></ul>
-
 <div id="edit-modal" class="modal-overlay hidden">
     <div class="modal-content">
         <h2>Editar Tarefa</h2>
@@ -23,6 +5,10 @@
             <div class="input-group">
                 <label for="edit-tarefa">Tarefa</label>
                 <input type="text" id="edit-tarefa" required>
+            </div>
+            <div class="input-group">
+                <label for="edit-data">Data</label>
+                <input type="date" id="edit-data">
             </div>
             <div class="input-group">
                 <label for="edit-horario">Horário</label>
@@ -35,7 +21,3 @@
         </form>
     </div>
 </div>
-
-<script src="script.js"></script>
-</body>
-</html>
