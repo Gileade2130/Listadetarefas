@@ -15,8 +15,7 @@ header {
     background-color: var(--cor-primaria);
     color: #fff;
     display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
+    flex-direction: column;
     align-items: center;
     padding: 20px;
 }
@@ -27,19 +26,33 @@ header h1 {
     margin-bottom: 15px;
 }
 
-header input {
+.input-container {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+}
+
+.input-container input {
     border: none;
     border-radius: 10px;
     padding: 10px;
-    width: 60%;
-    font-size: 18px;
+    font-size: 16px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+#tarefa {
+    flex-grow: 1;
+    min-width: 150px;
+}
+
+#data-input, #horario-input {
+    width: auto;
 }
 
 header button {
     background: none;
     border: none;
-    padding-left: 10px;
     font-size: 35px;
     cursor: pointer;
     transition: transform 0.2s ease-in-out;
@@ -57,7 +70,7 @@ ul {
 
 ul li {
     cursor: pointer;
-    padding: 10px 0;
+    padding: 10px 20px;
     list-style-type: none;
     font-size: 20px;
     display: flex;
@@ -102,7 +115,6 @@ ul li i {
     color: var(--cor-secundaria);
 }
 
-/* Estilos para o botão de editar */
 .edit-btn {
     background: none;
     border: none;
@@ -112,86 +124,11 @@ ul li i {
     margin-left: auto;
 }
 
-/* Estilos para o modal de edição */
-.modal-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
-}
-
-.modal-content {
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 10px;
-    width: 90%;
-    max-width: 400px;
-    text-align: center;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-}
-
-.modal-content h2 {
-    color: var(--cor-primaria);
-}
-
-.modal-content .input-group {
-    text-align: left;
-    margin-bottom: 15px;
-}
-
-.modal-content label {
-    display: block;
-    margin-bottom: 5px;
-}
-
-.modal-content input {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    font-size: 16px;
-}
-
-.modal-buttons {
-    display: flex;
-    justify-content: space-around;
-    gap: 10px;
-    margin-top: 20px;
-}
-
-.modal-buttons button {
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    font-size: 16px;
-    cursor: pointer;
-}
-
-#save-edit-btn {
-    background-color: var(--cor-secundaria);
-    color: #fff;
-}
-
-#cancel-edit-btn {
-    background-color: #ccc;
-    color: #333;
-}
-
-.hidden {
-    display: none;
-}
-
-/* Adiciona um espaço para o horário na lista */
 .tarefa-item .task-details {
     display: flex;
     align-items: center;
     gap: 10px;
+    flex-grow: 1;
 }
 
 .tarefa-item .task-details span {
