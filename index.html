@@ -10,24 +10,9 @@
 <body>
 <header>
     <h1> Lista de Tarefas </h1>
-    <div class="header-actions">
-        <button id="logout-btn">Sair</button>
-        <button id="manage-btn">Gerenciar Conta</button>
-    </div>
     <input type="text" id="tarefa" placeholder="Digite sua Tarefa">
     <button id="btn"><i class="fas fa-plus-circle"></i></button>
 </header> 
-
-<div id="manage-account-container" class="hidden">
-    <h2>Gerenciar Credenciais</h2>
-    <form id="manage-form">
-        <input type="text" id="current-username" placeholder="Usuário atual" required>
-        <input type="password" id="current-password" placeholder="Senha atual" required>
-        <input type="password" id="new-password" placeholder="Nova senha" required>
-        <button type="submit">Salvar nova senha</button>
-    </form>
-    <p id="manage-message"></p>
-</div>
 
 <ul id="lista"></ul>
 
