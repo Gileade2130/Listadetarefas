@@ -8,6 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let tarefas = [];
     let tarefaSendoEditadaIndex = null;
 
+    // Função para renderizar as tarefas na tela a partir do array 'tarefas'.
     function renderizarTarefas() {
         lista.innerHTML = '';
         
@@ -41,6 +42,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // Função para carregar as tarefas do LocalStorage
     function carregarTarefas() {
         const tarefasSalvas = localStorage.getItem('minhasTarefas');
         if (tarefasSalvas) {
@@ -49,11 +51,13 @@ document.addEventListener('DOMContentLoaded', () => {
         renderizarTarefas();
     }
 
+    // Função para salvar as tarefas no LocalStorage
     function salvarTarefas() {
         localStorage.setItem('minhasTarefas', JSON.stringify(tarefas));
     }
 
-    btn.addEventListener("click", function() {
+    // Função central para adicionar ou editar uma tarefa
+    function adicionarOuEditarTarefa() {
         const textoTarefa = tarefaInput.value.trim();
         const dataTarefa = dataInput.value;
         const horarioTarefa = horarioInput.value;
@@ -64,11 +68,13 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         if (tarefaSendoEditadaIndex !== null) {
+            // Se estiver editando, atualiza a tarefa existente
             tarefas[tarefaSendoEditadaIndex].texto = textoTarefa;
             tarefas[tarefaSendoEditadaIndex].data = dataTarefa;
             tarefas[tarefaSendoEditadaIndex].horario = horarioTarefa;
-            tarefaSendoEditadaIndex = null;
+            tarefaSendoEditadaIndex = null; // Reseta o índice de edição
         } else {
+            // Se não estiver editando, adiciona uma nova tarefa
             tarefas.push({
                 texto: textoTarefa,
                 concluida: false,
@@ -82,8 +88,31 @@ document.addEventListener('DOMContentLoaded', () => {
         tarefaInput.value = "";
         dataInput.value = "";
         horarioInput.value = "";
+    }
+
+    // Evento de clique para o botão "+"
+    btn.addEventListener("click", adicionarOuEditarTarefa);
+
+    // Evento de teclado para os campos de input
+    tarefaInput.addEventListener("keydown", function(e) {
+        if (e.key === "Enter") {
+            adicionarOuEditarTarefa();
+        }
     });
 
+    dataInput.addEventListener("keydown", function(e) {
+        if (e.key === "Enter") {
+            adicionarOuEditarTarefa();
+        }
+    });
+
+    horarioInput.addEventListener("keydown", function(e) {
+        if (e.key === "Enter") {
+            adicionarOuEditarTarefa();
+        }
+    });
+
+    // Lógica para clique na lista (marcar/remover/editar)
     lista.addEventListener("click", function(e) {
         if (e.target.classList.contains("check")) {
             const li = e.target.parentElement;
