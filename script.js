@@ -6,6 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const editModal = document.querySelector("#edit-modal");
     const editForm = document.querySelector("#edit-form");
     const editTarefaInput = document.querySelector("#edit-tarefa");
+    const editDataInput = document.querySelector("#edit-data"); // Novo campo
     const editHorarioInput = document.querySelector("#edit-horario");
     const saveEditBtn = document.querySelector("#save-edit-btn");
     const cancelEditBtn = document.querySelector("#cancel-edit-btn");
@@ -24,11 +25,21 @@ document.addEventListener('DOMContentLoaded', () => {
                 li.classList.add('concluida');
             }
 
+            // Formata a data e o horário para exibição
+            const dataHoraTexto = [];
+            if (item.data) {
+                dataHoraTexto.push(item.data);
+            }
+            if (item.horario) {
+                dataHoraTexto.push(item.horario);
+            }
+            const dataHoraDisplay = dataHoraTexto.length > 0 ? dataHoraTexto.join(' às ') : '';
+
             li.innerHTML = `
                 <i class="fas fa-check-circle check"></i>
                 <div class="task-details">
                     <span>${item.texto}</span>
-                    <span class="task-time">${item.horario ? item.horario : ''}</span>
+                    <span class="task-time">${dataHoraDisplay}</span>
                 </div>
                 <i class="fas fa-edit edit-btn" data-index="${index}"></i>
                 <i class="fa-solid fa-trash-can close" data-index="${index}"></i>
@@ -57,6 +68,7 @@ document.addEventListener('DOMContentLoaded', () => {
             tarefas.push({
                 texto: textoTarefa,
                 concluida: false,
+                data: "", // Nova propriedade
                 horario: ""
             });
             
@@ -90,6 +102,7 @@ document.addEventListener('DOMContentLoaded', () => {
             tarefaSendoEditadaIndex = index;
             
             editTarefaInput.value = tarefas[index].texto;
+            editDataInput.value = tarefas[index].data; // Preenche o campo de data
             editHorarioInput.value = tarefas[index].horario;
 
             editModal.classList.remove('hidden');
@@ -100,6 +113,7 @@ document.addEventListener('DOMContentLoaded', () => {
         e.preventDefault();
 
         const novoTexto = editTarefaInput.value.trim();
+        const novaData = editDataInput.value; // Pega o valor da data
         const novoHorario = editHorarioInput.value;
 
         if (novoTexto === "") {
@@ -108,6 +122,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         tarefas[tarefaSendoEditadaIndex].texto = novoTexto;
+        tarefas[tarefaSendoEditadaIndex].data = novaData;
         tarefas[tarefaSendoEditadaIndex].horario = novoHorario;
 
         salvarTarefas();
