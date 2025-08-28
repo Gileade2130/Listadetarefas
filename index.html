@@ -10,14 +10,47 @@
 <body>
 <header>
     <h1> Lista de Tarefas </h1>
+    <div class="header-actions">
+        <button id="logout-btn">Sair</button>
+        <button id="manage-btn">Gerenciar Conta</button>
+    </div>
     <input type="text" id="tarefa" placeholder="Digite sua Tarefa">
-    <span><i class="fas fa-plus-circle" id="btn"></i> </span>
+    <button id="btn"><i class="fas fa-plus-circle"></i></button>
 </header> 
 
-<ul id="lista">
-    <li><i class="fas fa-check-circle check" ></i><span>  </span><i class="fa-solid fa-trash-can close"></i></li>
+<div id="manage-account-container" class="hidden">
+    <h2>Gerenciar Credenciais</h2>
+    <form id="manage-form">
+        <input type="text" id="current-username" placeholder="Usuário atual" required>
+        <input type="password" id="current-password" placeholder="Senha atual" required>
+        <input type="password" id="new-password" placeholder="Nova senha" required>
+        <button type="submit">Salvar nova senha</button>
+    </form>
+    <p id="manage-message"></p>
+</div>
 
-</ul>
-    <script src="script.js"></script>
+<ul id="lista"></ul>
+
+<div id="edit-modal" class="modal-overlay hidden">
+    <div class="modal-content">
+        <h2>Editar Tarefa</h2>
+        <form id="edit-form">
+            <div class="input-group">
+                <label for="edit-tarefa">Tarefa</label>
+                <input type="text" id="edit-tarefa" required>
+            </div>
+            <div class="input-group">
+                <label for="edit-horario">Horário</label>
+                <input type="time" id="edit-horario">
+            </div>
+            <div class="modal-buttons">
+                <button type="submit" id="save-edit-btn">Salvar</button>
+                <button type="button" id="cancel-edit-btn">Cancelar</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script src="script.js"></script>
 </body>
 </html>
