@@ -53,7 +53,6 @@ document.addEventListener('DOMContentLoaded', () => {
         localStorage.setItem('minhasTarefas', JSON.stringify(tarefas));
     }
 
-    // Adiciona ou edita uma tarefa
     btn.addEventListener("click", function() {
         const textoTarefa = tarefaInput.value.trim();
         const dataTarefa = dataInput.value;
@@ -65,13 +64,11 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         if (tarefaSendoEditadaIndex !== null) {
-            // Se estiver editando, atualiza a tarefa existente
             tarefas[tarefaSendoEditadaIndex].texto = textoTarefa;
             tarefas[tarefaSendoEditadaIndex].data = dataTarefa;
             tarefas[tarefaSendoEditadaIndex].horario = horarioTarefa;
-            tarefaSendoEditadaIndex = null; // Reseta o índice de edição
+            tarefaSendoEditadaIndex = null;
         } else {
-            // Se não estiver editando, adiciona uma nova tarefa
             tarefas.push({
                 texto: textoTarefa,
                 concluida: false,
@@ -87,7 +84,6 @@ document.addEventListener('DOMContentLoaded', () => {
         horarioInput.value = "";
     });
 
-    // Lógica para clique na lista (marcar/remover/editar)
     lista.addEventListener("click", function(e) {
         if (e.target.classList.contains("check")) {
             const li = e.target.parentElement;
@@ -111,7 +107,6 @@ document.addEventListener('DOMContentLoaded', () => {
             const index = parseInt(e.target.dataset.index);
             tarefaSendoEditadaIndex = index;
             
-            // Preenche os campos de entrada com os dados da tarefa
             tarefaInput.value = tarefas[index].texto;
             dataInput.value = tarefas[index].data;
             horarioInput.value = tarefas[index].horario;
