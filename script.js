@@ -8,6 +8,21 @@ document.addEventListener('DOMContentLoaded', () => {
     let tarefas = [];
     let tarefaSendoEditadaIndex = null;
 
+    // Função para pedir permissão de notificação ao usuário
+    function pedirPermissaoNotificacao() {
+        if (!("Notification" in window)) {
+            console.log("Este navegador não suporta notificações.");
+        } else if (Notification.permission === "granted") {
+            console.log("Permissão para notificações já concedida.");
+        } else if (Notification.permission !== "denied") {
+            Notification.requestPermission().then(permission => {
+                if (permission === "granted") {
+                    console.log("Permissão para notificações concedida!");
+                }
+            });
+        }
+    }
+
     // Função para renderizar as tarefas na tela a partir do array 'tarefas'.
     function renderizarTarefas() {
         lista.innerHTML = '';
@@ -56,6 +71,29 @@ document.addEventListener('DOMContentLoaded', () => {
         localStorage.setItem('minhasTarefas', JSON.stringify(tarefas));
     }
 
+    // Função para checar e exibir as notificações
+    function checarNotificacoes() {
+        tarefas.forEach(item => {
+            if (item.data && item.horario && !item.concluida) {
+                const dataTarefa = new Date(`${item.data}T${item.horario}:00`);
+                const agora = new Date();
+                
+                // Converte a data da tarefa e a data atual para minutos para uma comparação mais fácil
+                const tempoTarefaEmMinutos = dataTarefa.getFullYear() * 525600 + dataTarefa.getMonth() * 43200 + dataTarefa.getDate() * 1440 + dataTarefa.getHours() * 60 + dataTarefa.getMinutes();
+                const tempoAgoraEmMinutos = agora.getFullYear() * 525600 + agora.getMonth() * 43200 + agora.getDate() * 1440 + agora.getHours() * 60 + agora.getMinutes();
+
+                if (tempoTarefaEmMinutos === tempoAgoraEmMinutos) {
+                    if (Notification.permission === "granted") {
+                        new Notification("Lembrete de Tarefa!", {
+                            body: `A tarefa "${item.texto}" está agendada para agora.`,
+                            icon: 'https://cdn-icons-png.flaticon.com/512/3233/3233816.png' // Ícone genérico
+                        });
+                    }
+                }
+            }
+        });
+    }
+
     // Função central para adicionar ou editar uma tarefa
     function adicionarOuEditarTarefa() {
         const textoTarefa = tarefaInput.value.trim();
@@ -68,13 +106,11 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         if (tarefaSendoEditadaIndex !== null) {
-            // Se estiver editando, atualiza a tarefa existente
             tarefas[tarefaSendoEditadaIndex].texto = textoTarefa;
             tarefas[tarefaSendoEditadaIndex].data = dataTarefa;
             tarefas[tarefaSendoEditadaIndex].horario = horarioTarefa;
-            tarefaSendoEditadaIndex = null; // Reseta o índice de edição
+            tarefaSendoEditadaIndex = null;
         } else {
-            // Se não estiver editando, adiciona uma nova tarefa
             tarefas.push({
                 texto: textoTarefa,
                 concluida: false,
@@ -90,10 +126,8 @@ document.addEventListener('DOMContentLoaded', () => {
         horarioInput.value = "";
     }
 
-    // Evento de clique para o botão "+"
     btn.addEventListener("click", adicionarOuEditarTarefa);
 
-    // Evento de teclado para os campos de input
     tarefaInput.addEventListener("keydown", function(e) {
         if (e.key === "Enter") {
             adicionarOuEditarTarefa();
@@ -112,7 +146,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Lógica para clique na lista (marcar/remover/editar)
     lista.addEventListener("click", function(e) {
         if (e.target.classList.contains("check")) {
             const li = e.target.parentElement;
@@ -141,6 +174,12 @@ document.addEventListener('DOMContentLoaded', () => {
             horarioInput.value = tarefas[index].horario;
         }
     });
+
+    // Chama a função de permissão quando a página carrega
+    pedirPermissaoNotificacao();
+
+    // Checa as notificações a cada 60 segundos
+    setInterval(checarNotificacoes, 60000);
 
     carregarTarefas();
 });
